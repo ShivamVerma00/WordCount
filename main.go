@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -10,12 +11,27 @@ import (
 )
 
 // Function for word count, returns map
-func word(s string) map[string]int {
+func word(s string) string {
 	count := map[string]int{}
-	for _, word := range strings.Fields(s)//Fields for words as a slice {
+	for _, word := range strings.Fields(s) { //Fields for words as a slice {
 		count[word]++
 	}
-	return count
+
+	word_count := make([]count_word, 0, len(count)) // slice
+	for k, v := range count {
+		word_count = append(word_count, count_word{word: k, count: v}) //counting frequency of words
+	}
+
+	//sorting (high to low frequency of words)
+	sort.Slice(word_count, func(i, j int) bool {
+		return word_count[i].count > word_count[j].count
+	})
+
+	for i := 0; i < 10 && i != len(word_count); i++ {
+		fmt.Println("Word ", word_count[i].word, "\t count :  \t", word_count[i].count)
+
+	}
+	return "Sucess"
 }
 
 type count_word struct {
@@ -33,21 +49,7 @@ func main() {
 		log.Fatal()
 	}
 
-	result := word(str) //calling word count function  and assigning in result
+	res := word(str)
 
-	word_count := make([]count_word, 0, len(result)) // slice
-	for k, v := range result {
-		word_count = append(word_count, count_word{word: k, count: v}) //counting frequency of words
-	}
-
-	//sorting (high to low frequency of words)
-	sort.Slice(word_count, func(i, j int) bool {
-		return word_count[i].count > word_count[j].count
-	})
-
-	for i := 0; i < 10 && i != len(word_count); i++ {
-		fmt.Println("Word ", word_count[i].word, "\t count :  \t", word_count[i].count)
-
-	}
-
+	fmt.Println(res)
 }
